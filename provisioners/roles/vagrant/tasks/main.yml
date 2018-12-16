@@ -5,12 +5,15 @@
       repo: https://gist.github.com/c1abb1b3b9b8164bb7ad57740d55ccf6.git
       dest: /tmp/shrink_box
   - name: Set file permissions
-    become: yes
-    shell: chmod +x /tmp/shrink_box/shrink
+    file:
+      path: /tmp/shrink_box/shrink
+      mode: u+rwx, g+rx, o+rx
   - name: Execute script
     become: yes
     become_user: root
-    shell: sh /tmp/shrink_box/shrink
+    shell: sh /tmp/shrink_box/shrink -n
   - name: Remove script again
     become: yes
-    shell: rm -rf /tmp/shrink_box
+    file:
+      path: /tmp/shrink_box/shrink
+      state: absent
